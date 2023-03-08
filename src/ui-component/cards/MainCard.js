@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
 

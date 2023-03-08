@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, prettier/prettier */
+/* eslint-disable no-unused-vars */
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

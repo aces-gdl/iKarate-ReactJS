@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 // material-ui
 import { Link, Typography, Stack } from '@mui/material';
 

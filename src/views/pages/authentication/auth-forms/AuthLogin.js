@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, prettier/prettier */
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 

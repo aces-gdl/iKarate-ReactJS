@@ -26,7 +26,24 @@ const other = {
             icon: icons.IconHelp,
             external: true,
             target: true
+        },
+        {
+            id: 'Club',
+            title: 'Listado de clubs2',
+            type: 'item',
+            url: '/views/clubs/Browse',
+            icon: icons.IconHelp,
+            breadcrums: false
+        },
+        {
+            id: 'DrawGroup',
+            title: 'Grupos',
+            type: 'item',
+            url: '/views/groups/draw',
+            icon: icons.IconHelp,
+            breadcrums: false
         }
+        
     ]
 };
 

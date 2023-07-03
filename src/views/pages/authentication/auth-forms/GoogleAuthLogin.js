@@ -5,6 +5,7 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { useNavigate } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import axios from "axios";
+import { useAlert } from 'react-alert';
 
 
 const clientId = '922396994640-0g6k9ks443ps0hfqs60c4lnheqsrchpp.apps.googleusercontent.com';
@@ -15,6 +16,7 @@ const clientId = '922396994640-0g6k9ks443ps0hfqs60c4lnheqsrchpp.apps.googleuserc
 function GoogleAuth() {
   const [profile, setProfile] = useState([]);
   const navigate = useNavigate();
+  const alert = useAlert();
   
    useEffect(() => {
     const initClient = () => {
@@ -36,6 +38,7 @@ function GoogleAuth() {
       navigate("/");
     })
     .catch((err) => {
+      alert.error(err.response.data.error)
       console.log('Error ', err )
     })
 

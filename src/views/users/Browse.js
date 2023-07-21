@@ -12,29 +12,11 @@ import { useEffect } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
 
 const columns = [
-    { id: 'Name', label: 'Nombre', minWidth: 100 },
-    { id: 'Description', label: 'Descripcion', minWidth: 170 },
-    {
-        id: 'Address',
-        label: 'Direccion',
-        minWidth: 170,
-        align: 'left',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'Contact',
-        label: 'Contacto',
-        minWidth: 170,
-        align: 'center',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'Phone',
-        label: 'Telefono',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toFixed(2),
-    },
+    { id: 'GivenName', label: 'Nombre', minWidth: 170 },
+    { id: 'FamilyName', label: 'Apellido', minWidth: 100 },
+    { id: 'Ranking', label: 'Posicion', minWidth: 50 },
+    { id: 'Category.Description', label: 'Categoria', minWidth: 100 },
+
 ];
 
 
@@ -46,7 +28,7 @@ export default function Browser() {
 
 
     const loadData = (newPage) => {
-        axios.get('/v1/catalogs/club?page=' + newPage)
+        axios.get('/v1/catalogs/user?page=' + newPage)
             .then((response) => {
                 setRows(response.data.data)
             })

@@ -42,6 +42,14 @@ const other = {
             url: '/views/groups/draw',
             icon: icons.IconHelp,
             breadcrums: false
+        },
+        {
+            id: 'BrowseUsers',
+            title: 'Usuarios',
+            type: 'item',
+            url: '/views/users/browse',
+            icon: icons.IconHelp,
+            breadcrums: false
         }
         
     ]

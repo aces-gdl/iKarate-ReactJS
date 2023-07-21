@@ -18,6 +18,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const ClubsBrowse = Loadable(lazy(() => import('views/clubs/Browse')));
 const DrawGroups = Loadable(lazy(() => import('views/groups/DrawGroups')));
+const UsersBrowse = Loadable(lazy(() => import('views/users/Browse')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -94,6 +95,10 @@ const MainRoutes = {
         {
             path: 'views/groups/Draw',
             element: <DrawGroups />
+        },
+        {
+            path: 'views/users/Browse',
+            element: <UsersBrowse />
         },
     ]
 };

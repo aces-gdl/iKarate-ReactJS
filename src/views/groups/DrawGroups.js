@@ -88,9 +88,6 @@ const DrawGroups = () => {
                                 <td class='text-center'>{team.Participants[1].Name}</td>
                             </tr>
                         ))}
-
-
-
                     </tbody>
                 </table>
             </div>

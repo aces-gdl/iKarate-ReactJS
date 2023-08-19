@@ -1,8 +1,8 @@
 // assets
-import { IconBrandChrome, IconHelp } from '@tabler/icons';
+import { IconBrandChrome, IconHelp,IconUser, IconUsers } from '@tabler/icons';
 
 // constant
-const icons = { IconBrandChrome, IconHelp };
+const icons = { IconBrandChrome, IconHelp, IconUser, IconUsers };
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
@@ -40,7 +40,7 @@ const other = {
             title: 'Grupos',
             type: 'item',
             url: '/views/groups/draw',
-            icon: icons.IconHelp,
+            icon: icons.IconUsers,
             breadcrums: false
         },
         {
@@ -48,7 +48,7 @@ const other = {
             title: 'Usuarios',
             type: 'item',
             url: '/views/users/browse',
-            icon: icons.IconHelp,
+            icon: icons.IconUser,
             breadcrums: false
         }
         

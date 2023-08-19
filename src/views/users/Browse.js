@@ -15,7 +15,8 @@ const columns = [
     { id: 'GivenName', label: 'Nombre', minWidth: 170 },
     { id: 'FamilyName', label: 'Apellido', minWidth: 100 },
     { id: 'Ranking', label: 'Posicion', minWidth: 50 },
-    { id: 'Category.Description', label: 'Categoria', minWidth: 100 },
+    { id: 'CategoryDescription', label: 'Categoria', minWidth: 100 },
+    { id: 'PermissionDescription', label: 'Permisos', minWidth: 100 },
 
 ];
 
@@ -30,7 +31,13 @@ export default function Browser() {
     const loadData = (newPage) => {
         axios.get('/v1/catalogs/user?page=' + newPage)
             .then((response) => {
-                setRows(response.data.data)
+                let rowsTemp = response.data.data.map((item) => {
+                    let myItem = item;
+                    myItem.CategoryDescription = item.Category.Description;
+                    myItem.PermissionDescription = item.Permissions.Description;
+                    return myItem;
+                })
+                setRows(rowsTemp)
             })
             .catch((error) => {
                 console.log("Error:", error)
@@ -74,7 +81,7 @@ export default function Browser() {
                             {rows
                                 .map((row) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
                                             {columns.map((column) => {
                                                 const value = row[column.id];
                                                 return (

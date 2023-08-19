@@ -73,7 +73,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
 
     let mainContent;
     let itemContent;
-    let breadcrumbContent = <Typography />;
+    let breadcrumbContent = <Typography ></Typography>;
     let itemTitle = '';
     let CollapseIcon;
     let ItemIcon;
@@ -121,8 +121,9 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
                         background: card === false ? 'transparent' : theme.palette.background.default
                     }}
                     {...others}
-                >
+                > 
                     <Box sx={{ p: 2, pl: card === false ? 0 : 2 }}>
+                       
                         <Grid
                             container
                             direction={rightAlign ? 'row' : 'column'}

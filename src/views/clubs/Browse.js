@@ -10,13 +10,15 @@ import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { useEffect } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
+import { Toolbar, Button, AppBar, Typography } from '@mui/material';
+
 
 const columns = [
     { id: 'Name', label: 'Nombre', minWidth: 100 },
     { id: 'Description', label: 'Descripcion', minWidth: 170 },
     {
         id: 'Address',
-        label: 'Direccion',
+        label: 'Dirección',
         minWidth: 170,
         align: 'left',
         format: (value) => value.toLocaleString('en-US'),
@@ -46,7 +48,7 @@ export default function Browser() {
 
 
     const loadData = (newPage) => {
-        axios.get('/v1/catalogs/club?page=' + newPage)
+        axios.get('/v1/catalogs/clubs?page=' + newPage)
             .then((response) => {
                 setRows(response.data.data)
             })
@@ -71,54 +73,62 @@ export default function Browser() {
 
 
     return (
-        <MainCard title="Listado de usuarios">
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: '85%' }}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {column.format && typeof value === 'number'
-                                                            ? column.format(value)
-                                                            : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    count={-1}
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-        </MainCard>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <AppBar position="static">     <Toolbar>
+                <Typography variant='h3' sx={{flexGrow:1}}>Listado de Clubs</Typography>
+                <Button color="inherit">Cargar Clubs</Button>
+            </Toolbar>
+            </AppBar>
+            <MainCard >
+
+                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                    <TableContainer sx={{ maxHeight: '85%' }}>
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows
+                                    .map((row) => {
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                {columns.map((column) => {
+                                                    const value = row[column.id];
+                                                    return (
+                                                        <TableCell key={column.id} align={column.align}>
+                                                            {column.format && typeof value === 'number'
+                                                                ? column.format(value)
+                                                                : value}
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        count={-1}
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+            </MainCard>
+        </Paper>
     );
 }

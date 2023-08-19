@@ -91,7 +91,7 @@ const Customization = () => {
     return (
         <>
             {/* toggle button */}
-            <Tooltip title="Live Customized">
+{/*             <Tooltip title="Live Customized">
                 <Fab
                     component="div"
                     onClick={handleToggle}
@@ -117,7 +117,7 @@ const Customization = () => {
                     </AnimateButton>
                 </Fab>
             </Tooltip>
-
+ */}
             <Drawer
                 anchor="right"
                 onClose={handleToggle}

@@ -52,8 +52,63 @@ export default function Browser() {
     useEffect(() => {
         loadData(1)
     }, [])
+    
 
-  
+    const formatDataValue = (definition, value) => {
+        let result = '';
+        switch (definition.FormatDisplay) {
+          case 'Text':
+            result = value[definition.FieldName];
+            break;
+          case 'Check':
+            return value[definition.FieldName] === 1 ? (
+              <IconX name="simple-icon-check" />
+            ) : (
+              <IconX name="simple-icon-close" />
+            );
+    
+          case 'Date':
+            const myDate = new Date(value[definition.FieldName]);
+            result = myDate.toLocaleDateString();
+            // TODO: dd-MMM-YYYY
+            break;
+          case 'DateTime':
+            const myDateTime = new Date(value[definition.FieldName]);
+            result = `${myDateTime.toLocaleDateString()} ${myDateTime.toLocaleTimeString()}`;
+            break;
+                case 'Image':
+                  return (
+                    
+                      <LoadImageFromURL
+                        id={`at-row-${value.ID || ''}`}
+                        height="100"
+                        picurl={`/rest/api/v4/system/general/image?max_age=5&target=${definition.Target}&id=${value[definition.FieldName]}`}
+                        alt="blob"
+                      />
+                    
+                  );
+          
+          case 'number':
+            return <Typography>{value[definition.FieldName]}</Typography>;
+          case 'actions':
+            return (
+              <div className="d-flex justify-content-around align-items-center">
+                <IconX name="simple-icon-eye" onClick={() => onViewClick(value)} />{' '}
+                <IconX
+                  name="simple-icon-pencil"
+                  onClick={() => onEditClick(value)}
+                />
+              </div>
+            );
+    
+          default:
+            result = value[definition.FieldName];
+            break;
+        }
+        return result;
+      };
+    
+
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <AppBar position="static">

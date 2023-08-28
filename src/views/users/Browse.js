@@ -10,16 +10,20 @@ import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { useEffect } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import { IconEdit } from '@tabler/icons'; 
-import { minWidth } from '@mui/system';
+import { AppBar, Button, Dialog, Toolbar, Typography } from '@mui/material';
+import { IconEdit,IconEye } from '@tabler/icons'; 
+import SubCard from 'ui-component/cards/SubCard';
+import Update from './Update';
+import { useState } from 'react';
+
+
 const columns = [
-    { id: 'GivenName', label: 'Nombre', minWidth: 170 },
+    { id: 'GivenName', label: 'Nombre', minWidth: 100 },
     { id: 'FamilyName', label: 'Apellido', minWidth: 100 },
-    { id: 'Ranking', label: 'Posicion', minWidth: 50 },
+    { id: 'Ranking', label: 'Puntos', minWidth: 50 },
     { id: 'CategoryDescription', label: 'Categoria', minWidth: 100 },
     { id: 'PermissionDescription', label: 'Permisos', minWidth: 100 },
-    { id: 'EditRecord', label:'Edit', minWidth: 50, type:'Clickable'}
+    { id: 'actions', label:'Acciones', minWidth: 30, FormatDisplay:'actions', align:'center'}
 ];
 
 
@@ -27,6 +31,11 @@ export default function Browser() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [rows, setRows] = React.useState([]);
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const [user,setUser]= React.useState(null);
+    const [permissions, setPermissions]= useState([]);
+    const [categories, setCategories]= useState([]);
+
 
 
     const loadData = (newPage) => {
@@ -36,6 +45,19 @@ export default function Browser() {
             })
             .catch((error) => {
                 console.log("Error:", error)
+            })
+    }
+
+    const loadCategories = () => {
+        let URL = '/v1/catalogs/categories?limit=-1'
+
+        axios.get(URL)
+            .then((response) => {
+                setCategories(response.data.data);
+                console.log('Categories ', response.data.data)
+            })
+            .catch((err) => {
+                console.log('Error : ', err)
             })
     }
 
@@ -50,59 +72,68 @@ export default function Browser() {
     };
 
     useEffect(() => {
-        loadData(1)
+        loadData(1);
+        loadCategories();
     }, [])
     
+
+    const openView = (value) =>{
+        console.log ("View " ,value)
+    }
+    const openUpdate = (value) =>{
+        console.log ("Update " ,value)
+        setUser(value);
+        setModalOpen(true);
+    }
 
     const formatDataValue = (definition, value) => {
         let result = '';
         switch (definition.FormatDisplay) {
           case 'Text':
-            result = value[definition.FieldName];
+            result = value[definition.id];
             break;
-          case 'Check':
+ /*         case 'Check':
             return value[definition.FieldName] === 1 ? (
               <IconX name="simple-icon-check" />
             ) : (
               <IconX name="simple-icon-close" />
             );
     
-          case 'Date':
-            const myDate = new Date(value[definition.FieldName]);
+   */
+         case 'Date':
+            const myDate = new Date(value[definition.id]);
             result = myDate.toLocaleDateString();
             // TODO: dd-MMM-YYYY
             break;
           case 'DateTime':
-            const myDateTime = new Date(value[definition.FieldName]);
+            const myDateTime = new Date(value[definition.id]);
             result = `${myDateTime.toLocaleDateString()} ${myDateTime.toLocaleTimeString()}`;
             break;
-                case 'Image':
-                  return (
-                    
-                      <LoadImageFromURL
-                        id={`at-row-${value.ID || ''}`}
-                        height="100"
-                        picurl={`/rest/api/v4/system/general/image?max_age=5&target=${definition.Target}&id=${value[definition.FieldName]}`}
-                        alt="blob"
-                      />
-                    
-                  );
-          
+/*        case 'Image':
+            return (
+            
+                <LoadImageFromURL
+                id={`at-row-${value.ID || ''}`}
+                height="100"
+                picurl={`/rest/api/v4/system/general/image?max_age=5&target=${definition.Target}&id=${value[definition.FieldName]}`}
+                alt="blob"
+                />
+            
+            );
+  */        
           case 'number':
-            return <Typography>{value[definition.FieldName]}</Typography>;
+            return <Typography>{value[definition.id]}</Typography>;
           case 'actions':
             return (
               <div className="d-flex justify-content-around align-items-center">
-                <IconX name="simple-icon-eye" onClick={() => onViewClick(value)} />{' '}
-                <IconX
-                  name="simple-icon-pencil"
-                  onClick={() => onEditClick(value)}
-                />
+             {/*    <IconX name="simple-icon-eye" onClick={() => onViewClick(value)} />{' '} */}
+                <IconEye onClick={() => openView(value)}/>
+                <IconEdit onClick={() => openUpdate(value)}/>
               </div>
             );
     
           default:
-            result = value[definition.FieldName];
+            result = value[definition.id];
             break;
         }
         return result;
@@ -139,15 +170,11 @@ export default function Browser() {
                                 {rows
                                     .map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
                                                 {columns.map((column) => {
-                                                    const value = row[column.id];
                                                     return (
                                                         <TableCell key={column.id} align={column.align}>
-                                                           
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
+                                                          {formatDataValue(column,row)}
                                                         </TableCell>
                                                     );
                                                 })}
@@ -168,6 +195,9 @@ export default function Browser() {
                     />
                 </Paper>
             </MainCard>
+            <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
+             <Update data={user} categories={categories} />
+            </Dialog>
         </Paper>
     );
 }

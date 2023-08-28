@@ -22,7 +22,7 @@ const tournamentAdministration = {
             id: 'Crear Torneo',
             title: 'Crea Torneo',
             type: 'item',
-            url: '/views/clubs/Browse',
+            url: '/views/tournament/dashboard',
             icon: icons.IconTournament,
             breadcrums: true
         },

@@ -19,6 +19,7 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const ClubsBrowse = Loadable(lazy(() => import('views/clubs/Browse')));
 const DrawGroups = Loadable(lazy(() => import('views/groups/DrawGroups')));
 const UsersBrowse = Loadable(lazy(() => import('views/users/Browse')));
+const TournamentDashboard = Loadable(lazy(() => import ('views/tournaments/Dashboard')))
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -99,6 +100,10 @@ const MainRoutes = {
         {
             path: 'views/users/Browse',
             element: <UsersBrowse />
+        }, 
+        {
+            path: 'views/tournament/dashboard',
+            element: <TournamentDashboard />
         },
     ]
 };

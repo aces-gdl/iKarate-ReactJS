@@ -14,7 +14,7 @@ const tournamentAdministration = {
             id: 'subscribed',
             title: 'Inscripciones',
             type: 'item',
-            url: '/views/clubs/Browse',
+            url: '/views/tournament/teamsenrolled',
             icon: icons.IconUserPlus,
             breadcrums: true
         },

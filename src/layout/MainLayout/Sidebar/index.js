@@ -27,8 +27,8 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                     <LogoSection />
                 </Box>
             </Box>
-            <BrowserView>
-                <PerfectScrollbar
+ {/*            <BrowserView>
+ */}                <PerfectScrollbar
                     component="div"
                     style={{
                         height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
@@ -39,13 +39,13 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                     <MenuList />
  {/*                    <MenuCard /> */}
                 </PerfectScrollbar>
-            </BrowserView>
+  {/*           </BrowserView>
             <MobileView>
                 <Box sx={{ px: 2 }}>
                     <MenuList />
                     <MenuCard />
                 </Box>
-            </MobileView>
+            </MobileView> */}
         </>
     );
 

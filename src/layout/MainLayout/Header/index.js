@@ -47,7 +47,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                                 color: theme.palette.secondary.light
                             }
                         }}
-                        onClick={handleLeftDrawerToggle}
+                        onClickCapture={handleLeftDrawerToggle}
                         color="inherit"
                     >
                         <IconMenu2 stroke={1.5} size="1.3rem" />

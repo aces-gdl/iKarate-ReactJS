@@ -71,7 +71,7 @@ const MainLayout = () => {
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
     const dispatch = useDispatch();
-    const handleLeftDrawerToggle = () => {
+    const handleLeftDrawerToggle = (e) => {
         dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
     };
 
@@ -95,7 +95,7 @@ const MainLayout = () => {
                 }}
             >
                 <Toolbar>
-                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
+                    <Header handleLeftDrawerToggle={(event)=> handleLeftDrawerToggle(event)} />
                 </Toolbar>
             </AppBar>
 

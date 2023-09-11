@@ -7,7 +7,7 @@ const useScriptRef = () => {
 
     useEffect(
         () => () => {
-            scripted.current = false;
+            scripted.current = true;
         },
         []
     );

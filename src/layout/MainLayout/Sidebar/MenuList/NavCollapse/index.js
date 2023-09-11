@@ -22,7 +22,9 @@ const NavCollapse = ({ menu, level }) => {
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(null);
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+     
+        e.preventDefault();
         setOpen(!open);
         setSelected(!selected ? menu.id : null);
     };

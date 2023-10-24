@@ -6,12 +6,12 @@ const icons = { IconBrandChrome, IconBeach, IconUser, IconUsers,IconTournament,I
 // ==============================|| MENU Adminstracion ||============================== //
 
 const tournamentAdministration = {
-    id: 'tournaments',
-    title: 'Torneos',
+    id: 'Commercial',
+    title: 'TorneosComercial',
     type: 'group',
     children: [
         {
-            id: 'subscribed',
+            id: 'Inscripciones',
             title: 'Inscripciones',
             type: 'item',
             url: '/views/tournament/teamsenrolled',
@@ -19,24 +19,24 @@ const tournamentAdministration = {
             breadcrums: true
         },
         {       
-            id: 'Crear Torneo',
-            title: 'Crea Torneo',
+            id: 'MonthlyPayments',
+            title: 'Pagos mensuales',
             type: 'item',
             url: '/views/tournament/dashboard',
             icon: icons.IconTournament,
             breadcrums: true
         },
         {
-            id: 'Groups',
-            title: 'Grupos',
+            id: 'Attendance',
+            title: 'Asistencia',
             type: 'item',
             url: '/views/groups/draw',
             icon: icons.IconUsers,
             breadcrums: true
         },
         {
-            id: 'Calendario',
-            title: 'Calendario Juegos',
+            id: 'Eventos',
+            title: 'Eventos',
             type: 'item',
             url: '/views/users/browse',
             icon: icons.IconCalendarStats,

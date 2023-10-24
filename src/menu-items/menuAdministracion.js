@@ -11,10 +11,10 @@ const menuAdministracion = {
     type: 'group',
     children: [
         {
-            id: 'Club',
-            title: 'Clubs',
+            id: 'Dojos',
+            title: 'Dojos',
             type: 'item',
-            url: '/views/clubs/Browse',
+            url: '/views/dojos/Browse',
             icon: icons.IconBeach,
             breadcrums: true
         },

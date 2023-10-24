@@ -1,204 +1,84 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { useEffect } from 'react';
-import MainCard from 'ui-component/cards/MainCard';
-import { AppBar, Button, Dialog, Toolbar, Typography } from '@mui/material';
-import { IconEdit,IconEye } from '@tabler/icons'; 
-import SubCard from 'ui-component/cards/SubCard';
-import Update from './Update';
-import { useState } from 'react';
+import { Dialog } from '@mui/material';
+import TableBrowseVirtuoso from 'ui-component/tables/TableBrowseVirtuoso';
+import { useNavigate } from 'react-router';
+import { useAlert } from 'react-alert';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-
-const columns = [
-    { id: 'GivenName', label: 'Nombre', minWidth: 100 },
-    { id: 'FamilyName', label: 'Apellido', minWidth: 100 },
-    { id: 'Ranking', label: 'Puntos', minWidth: 50 },
-    { id: 'CategoryDescription', label: 'Categoria', minWidth: 100 },
-    { id: 'PermissionDescription', label: 'Permisos', minWidth: 100 },
-    { id: 'actions', label:'Acciones', minWidth: 30, FormatDisplay:'actions', align:'center'}
-];
-
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import View from './View';
 
 export default function Browser() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const navigate = useNavigate();
+    const alert = useAlert();
+
     const [rows, setRows] = React.useState([]);
-    const [modalOpen, setModalOpen] = React.useState(false);
-    const [user,setUser]= React.useState(null);
-    const [permissions, setPermissions]= useState([]);
-    const [categories, setCategories]= useState([]);
+    const [currentRow, setCurrenRow] = React.useState({});
+    const [viewOpen, setViewOpen] = React.useState(false);
 
+    const columns = [
+        { id: 'GivenName', label: 'Nombre', minWidth: 100, FormatDisplay: 'Text' },
+        { id: 'FamilyName', label: 'Apellido', minWidth: 100, FormatDisplay: 'Text' },
+        { id: 'Belt', label: 'Cinta', minWidth: 50, FormatDisplay: 'Text' },
+        { id: 'PermissionID', label: 'Permisos', minWidth: 100, FormatDisplay: 'Text' },
+        { id: 'actions', label: 'Acciones', minWidth: 30, FormatDisplay: 'actions', align: 'center' }
+    ];
 
-
-    const loadData = (newPage) => {
-        axios.get('/v1/catalogs/users?page=' + newPage)
+    const mainTitle = 'Cataloo de usuarios'
+    const loadMainData = (newPage) => {
+        axios.get('/v1/catalogs/users?limit=-1')
             .then((response) => {
                 setRows(response.data.data)
             })
             .catch((error) => {
-                console.log("Error:", error)
+                alert.error('Error leyendo usuarios')
+                if (error.response.status === 401) {
+                    navigate('/pages/login/login3')
+                }
             })
     }
-
-    const loadCategories = () => {
-        let URL = '/v1/catalogs/categories?limit=-1'
-
-        axios.get(URL)
-            .then((response) => {
-                setCategories(response.data.data);
-                console.log('Categories ', response.data.data)
-            })
-            .catch((err) => {
-                console.log('Error : ', err)
-            })
-    }
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-        loadData(newPage + 1)
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(1);
-    };
 
     useEffect(() => {
-        loadData(1);
-        loadCategories();
+        loadMainData(1);
     }, [])
-    
 
-    const openView = (value) =>{
-        console.log ("View " ,value)
-    }
-    const openUpdate = (value) =>{
-        console.log ("Update " ,value)
-        setUser(value);
-        setModalOpen(true);
+    const openAdd = () => {
+        alert.success('Open Add')
     }
 
-    const formatDataValue = (definition, value) => {
-        let result = '';
-        switch (definition.FormatDisplay) {
-          case 'Text':
-            result = value[definition.id];
-            break;
- /*         case 'Check':
-            return value[definition.FieldName] === 1 ? (
-              <IconX name="simple-icon-check" />
-            ) : (
-              <IconX name="simple-icon-close" />
-            );
-    
-   */
-         case 'Date':
-            const myDate = new Date(value[definition.id]);
-            result = myDate.toLocaleDateString();
-            // TODO: dd-MMM-YYYY
-            break;
-          case 'DateTime':
-            const myDateTime = new Date(value[definition.id]);
-            result = `${myDateTime.toLocaleDateString()} ${myDateTime.toLocaleTimeString()}`;
-            break;
-/*        case 'Image':
-            return (
-            
-                <LoadImageFromURL
-                id={`at-row-${value.ID || ''}`}
-                height="100"
-                picurl={`/rest/api/v4/system/general/image?max_age=5&target=${definition.Target}&id=${value[definition.FieldName]}`}
-                alt="blob"
-                />
-            
-            );
-  */        
-          case 'number':
-            return <Typography>{value[definition.id]}</Typography>;
-          case 'actions':
-            return (
-              <div className="d-flex justify-content-around align-items-center">
-             {/*    <IconX name="simple-icon-eye" onClick={() => onViewClick(value)} />{' '} */}
-                <IconEye onClick={() => openView(value)}/>
-                <IconEdit onClick={() => openUpdate(value)}/>
-              </div>
-            );
-    
-          default:
-            result = value[definition.id];
-            break;
-        }
-        return result;
-      };
-    
+    const openView = (row) => {
+        setCurrenRow (row);
+        setViewOpen(true);
+
+    }
+
+    const openUpdate = () => {
+        alert.success('Open Update')
+    }
+
+    const handleClose = () =>{
+        setViewOpen(false);
+    }
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant='h3' sx={{ flexGrow: 1 }}>Listado de Usuarios</Typography>
-                    <Button color="inherit">Cargar Clubs</Button>
-                </Toolbar>
-            </AppBar>
-            <MainCard >
-
-                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                    <TableContainer sx={{ maxHeight: '85%' }}>
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align}
-                                            style={{ minWidth: column.minWidth }}
-                                        >
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows
-                                    .map((row) => {
-                                        return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
-                                                {columns.map((column) => {
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                          {formatDataValue(column,row)}
-                                                        </TableCell>
-                                                    );
-                                                })}
-                                            </TableRow>
-                                        );
-                                    })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        count={-1}
-                        rowsPerPageOptions={[10, 25, 100]}
-                        component="div"
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <>
+                {rows && rows.length > 0 && (
+                    <TableBrowseVirtuoso
+                        rows={rows}
+                        columns={columns}
+                        openView={openView}
+                        openUpdate={openUpdate}
+                        openAdd={openAdd}
                     />
-                </Paper>
-            </MainCard>
-            <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
-             <Update data={user} categories={categories} />
-            </Dialog>
-        </Paper>
-    );
+                )}
+                <Dialog open={viewOpen} onClose={handleClose} >
+                    <View handleClose={handleClose} row={currentRow} />
+                </Dialog>
+            </>
+        </LocalizationProvider>
+    )
 }
 

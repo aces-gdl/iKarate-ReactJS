@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
+
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 
@@ -21,6 +22,7 @@ const DrawGroups = Loadable(lazy(() => import('views/groups/DrawGroups')));
 const UsersBrowse = Loadable(lazy(() => import('views/users/Browse')));
 const TournamentDashboard = Loadable(lazy(() => import('views/tournaments/Dashboard')))
 const TournamentEnrolledTeams = Loadable(lazy(() => import('views/teamsEnrolled/BrowseTeams')))
+const Tester = Loadable(lazy(() => import('ui-component/tables/Tester')))
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -109,6 +111,10 @@ const MainRoutes = {
         {
             path: 'views/tournament/teamsenrolled',
             element: <TournamentEnrolledTeams />
+        },
+        {
+            path: 'views/test',
+            element: <Tester />
         },
     ]
 };

@@ -4,16 +4,12 @@ import Axios from "axios";
 import React, { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import PropTypes from "prop-types";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { useTranslation } from 'react-i18next';
 import { CancelButton, ConfirmButton } from 'components/buttons';
 import authHeader from "../../services/auth-header";
 import ImageCropper from './ImageCropper';
-import './controls.css'
-import IconX from "./IconX";
 
 
 const MyLoadImageFromURL = forwardRef((props, ref) => {
-  const { t } = useTranslation();
   const [picBase64, setPicBase64] = useState("");
   const [isCropperOpen, setIsCropperOpen] = useState(false)
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)

@@ -1,11 +1,12 @@
 import { Button, DialogActions, DialogContent, DialogTitle, FormControl, Grid, TextField } from '@mui/material'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import BeltSelector from 'components/BeltSelector'
+import LoadImageFromURL from 'components/LoadImageFromURL'
 import React, { useEffect, useState } from 'react'
 
 const View = (props) => {
     const { handleClose } = props
-    const {CategoryID, GivenName, FamilyName} = props.row
+    const { CategoryID, GivenName, FamilyName } = props.row
     const [values, setValues] = useState({
         CategoryID: '',
         GivenName: '',
@@ -42,7 +43,7 @@ const View = (props) => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            style={{marginTop:'10px'}}
+                            style={{ marginTop: '10px' }}
                             label='Nombre(s)'
                             name='GivenName'
                             value={values.GivenName}
@@ -53,7 +54,7 @@ const View = (props) => {
                     <Grid item xs={6}>
 
                         <TextField
-                             style={{marginTop:'10px'}}
+                            style={{ marginTop: '10px' }}
                             fullWidth
                             label='Apellido(s)'
                             name='FamilyName'
@@ -78,6 +79,13 @@ const View = (props) => {
                                 onChange={(newValue) => handleDateUpdate(newValue, "Birthday")}
                             />
                         </FormControl>
+
+                    </Grid>
+                    <Grid item xs={6}>
+                        <LoadImageFromURL
+                            picurl='https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fhuman&psig=AOvVaw1kZvbCqjnrwfR1cTdfvqXq&ust=1698268097845000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMCikujLj4IDFQAAAAAdAAAAABAE'
+                            id='MyPicture'
+                        />
 
                     </Grid>
                 </Grid>

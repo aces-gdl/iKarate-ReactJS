@@ -1,8 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { Button, Card, CardContent, Dialog, Paper } from '@mui/material';
-import TableBrowseVirtuoso from 'ui-component/tables/TableBrowseVirtuoso';
+import { Button, Card, CardContent, Dialog, Grid, Paper, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { useAlert } from 'react-alert';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,8 +11,9 @@ import View from './View';
 import { IconCirclePlus } from '@tabler/icons';
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
+import LoadImageFromURL from 'components/LoadImageFromURL';
 
-export default function Browser() {
+export default function BrowserList() {
     const navigate = useNavigate();
     const alert = useAlert();
 
@@ -65,24 +65,21 @@ export default function Browser() {
         setViewOpen(false);
     }
 
+
+    const RenderCard = (row) => {
+        return (
+            <Grid item sm={12} md={6} lg={4} >
+                <SubCard  title={row.Name} >
+                    <LoadImageFromURL imageid={row.ID} imagename={row.Name}  thumbnail/>
+                </SubCard>
+                </Grid>
+        )
+    }
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <>
-                <SubCard title='Listado de usuarios' content secondary={<Button variant='contained' >Nuevo<IconCirclePlus style={{ paddingLeft: '2px' }} /></Button>}>
-                </SubCard>
-                {rows && rows.length > 0 && (
-                    <TableBrowseVirtuoso
-                        rows={rows}
-                        columns={columns}
-                        openView={openView}
-                        openUpdate={openUpdate}
-                        openAdd={openAdd}
-                    />
-                )}
-                <Dialog open={viewOpen} onClose={handleClose} >
-                    <View handleClose={handleClose} row={currentRow} />
-                </Dialog>
-            </>
+            <Grid container spacing={2} >
+                {rows.map((row) => RenderCard(row))}
+            </Grid>
         </LocalizationProvider>
     )
 }

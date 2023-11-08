@@ -19,7 +19,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const ClubsBrowse = Loadable(lazy(() => import('views/clubs/Browse')));
 const DrawGroups = Loadable(lazy(() => import('views/groups/DrawGroups')));
-const UsersBrowse = Loadable(lazy(() => import('views/users/Browse')));
+const UsersBrowse = Loadable(lazy(() => import('views/users')));
 const TournamentDashboard = Loadable(lazy(() => import('views/tournaments/Dashboard')))
 const TournamentEnrolledTeams = Loadable(lazy(() => import('views/teamsEnrolled/BrowseTeams')))
 const Tester = Loadable(lazy(() => import('ui-component/tables/Tester')))
@@ -101,7 +101,7 @@ const MainRoutes = {
             element: <DrawGroups />
         },
         {
-            path: 'views/users/Browse',
+            path: 'views/users',
             element: <UsersBrowse />
         },
         {

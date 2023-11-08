@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper';
 import { TableVirtuoso } from 'react-virtuoso';
 import { Typography } from '@mui/material';
 import { IconEdit, IconEye } from '@tabler/icons';
-import MainCard from 'ui-component/cards/MainCard';
 
 
 const VirtuosoTableComponents = {

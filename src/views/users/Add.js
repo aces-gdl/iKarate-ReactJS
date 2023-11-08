@@ -1,41 +1,153 @@
-import { Button, Grid, TextField } from '@mui/material';
-import React from 'react'
-import SubCard from 'ui-component/cards/SubCard';
+import { Button, DialogActions, DialogContent, DialogTitle, FormControl, Grid, TextField } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers'
+import axios from 'axios'
+import BeltSelector from 'components/BeltSelector'
+import LoadImageFromURL from 'components/LoadImageFromURL'
+import React, { useEffect, useState } from 'react'
 
 const Add = (props) => {
-    const [values, setValues] = React.useState({
-        Name: "",
-        Description: "",
-        ShortName: "",
-        Address: "",
-        Phone: "",
-        ManagerID: "",
-        Active: true
+    const { handleClose } = props
+    const { CategoryID, GivenName, FamilyName,Email,ID } = props.row
+    const [values, setValues] = useState({
+        CategoryID: '',
+        GivenName: '',
+        FamilyName: '',
+        Email:'',
     });
 
-    const {closeModal} = props
+
     const handleUpdate = (e) => {
-        // setHasChanges(true);
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
     };
+
+    const handleDateUpdate = (newValue, name) => {
+        // setHasChanges(true);
+        if (name && newValue) {
+            setValues({ ...values, [name]: newValue });
+        }
+    };
+
+    useEffect(() => {
+        setValues({
+            CategoryID: CategoryID,
+            GivenName: GivenName,
+            FamilyName: FamilyName,
+            Email: Email,
+            ID: ID
+        })
+    }, [])
+
+
+    const createUser = () => {
+        const payload = {
+
+        }
+    }
+
+
+    const handleImageUpdate = (e) => {
+        // setHasChanges(true);
+        const { name, value } = e.target;
+        if (name && value) {
+            setValues({ ...values, [name]: value });
+            let formData = new FormData();
+            formData.append("file", value);
+            formData.append("ID", "a401d49b-2961-4415-841f-5e38bd546f69");
+            let header = {
+                headers: {
+                    "Content-Type": false,
+                }
+            }
+            axios.post("/v1/utility/imageupload", formData, header)
+                .then((response) => {
+                    console.log("ok : ", response)
+                })
+                .catch((err) => {
+                    console.log('Error: ', err)
+                })
+        }
+    };
+
+
     return (
-        <SubCard title=" NUevo usuario">
-            <Grid container sm={6}>
-                <Grid item sm={6}>
-                    <TextField
-                        id="Name"
-                        name="Name"
-                        label="Nombre"
-                        value={values.Name }
-                        onChange={handleUpdate}
-                    />
+        <div>
+            <DialogTitle align='center' variant=''>Datos de usuario</DialogTitle>
+            <DialogContent >
+
+
+                <Grid container spacing={3} >
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            style={{ marginTop: '10px' }}
+                            label='Nombre(s)'
+                            name='GivenName'
+                            value={values.GivenName}
+                            onChange={handleUpdate}
+                        />
+
+                    </Grid>
+                    <Grid item xs={6}>
+
+                        <TextField
+                            style={{ marginTop: '10px' }}
+                            fullWidth
+                            label='Apellido(s)'
+                            name='FamilyName'
+                            value={values.FamilyName}
+                            onChange={handleUpdate}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <BeltSelector
+                            name='CategoryID'
+                            value={values.CategoryID}
+                            onChange={handleUpdate}
+                        />
+
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <DatePicker
+                                label="Fecha de Nacimiento"
+                                name="BirthDate"
+                                value={values.Birthday}
+                                onChange={(newValue) => handleDateUpdate(newValue, "Birthday")}
+                            />
+                        </FormControl>
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            style={{ marginTop: '10px' }}
+                            label='Correo electronico'
+                            name='Email'
+                            value={values.Email}
+                            onChange={handleUpdate}
+                        />
+
+                    </Grid>
+                    <Grid item xs={12} alignItems={'center'}>
+                        <LoadImageFromURL
+                            loadimage
+                            id="myImage"
+                            name="myImage"
+                            imageid={values.ID}
+                            imagename={props.Name}
+                            handleupdate={handleUpdate}
+                            width='100%'
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item sm={6}>
-                    <Button variant='outlined' onClick={()=>closeModal(false)}>Cerrar</Button>
-                </Grid>
-            </Grid>
-        </SubCard>
+
+            </DialogContent>
+            <DialogActions>
+                <Button variant='outlined' onClick={handleClose}>Cancelar</Button>
+                <Button variant='outlined' onClick={handleClose}>Aceptar</Button>
+            </DialogActions>
+        </div>
     )
 }
 

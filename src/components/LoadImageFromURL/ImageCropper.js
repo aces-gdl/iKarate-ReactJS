@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text, func-names, no-unused-vars, no-shadow */
+/* eslint-disable react-hooks/exhaustive-deps, */
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Dropzone from 'react-dropzone';
 import Cropper from 'react-easy-crop';
-import { useTranslation } from 'react-i18next';
-import { CancelButton, ConfirmButton } from 'components/buttons';
-import IconX from './IconX';
-import CreateNotification from './NotificationX';
 import getCroppedImg from './cropImage'
+import { IconMinus, IconPlus, IconRotate, IconAspectRatio } from '@tabler/icons';
+import { Button, Grid, Slider, Stack } from '@mui/material';
+import './styles.css'
 
 const baseStyle = {
   flex: 1,
@@ -19,7 +19,7 @@ const baseStyle = {
   borderColor: '#eeeeee',
   borderStyle: 'dashed',
   backgroundColor: '#fafafa',
-  color: '#bdbdbd',
+  color: 'black',
   outline: 'none',
   transition: 'border .24s ease-in-out'
 };
@@ -37,7 +37,6 @@ const rejectStyle = {
 };
 
 function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspectRatio }) {
-  const { t } = useTranslation();
   const maxSize = 10000000;
   const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif, image/webp';
   const acceptedFileTypesArray = acceptedFileTypes.split(',').map((item) => item.trim());
@@ -45,7 +44,7 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
   const [croppedImage, setCroppedImage] = useState(null)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const [rotationValue, setRotationValue] = useState(0);
-  const [zoomValue, setZoomValue] = useState(1);
+  const [zoomValue, setZoomValue] = useState(1.0);
   const canvasRef = useRef();
   const imageRef = useRef();
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -55,11 +54,11 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
   const isFocused = true;
 
   const changeZoomValue = (value) => {
-    if ((zoomValue + value) >= 1 ) setZoomValue(zoomValue + value);
+    setZoomValue(value);
   }
 
   const changeRotationValue = (value) => {
-    setRotationValue(rotationValue + value);
+    setRotationValue(value);
   }
   const verifyFile = (files) => {
     if (files && files.length > 0) {
@@ -67,11 +66,11 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
       const currentFileSize = currentFile.size;
       const currentFileType = currentFile.type;
       if (currentFileSize > maxSize) {
-        CreateNotification('error', t('Generic.FileTooLarge'), '')
+        //CreateNotification('error', t('Generic.FileTooLarge'), '')
         return false;
       }
       if (!acceptedFileTypesArray.includes(currentFileType)) {
-        CreateNotification('error', t('Generic.FileTypeInvalid'), '');
+        // CreateNotification('error', t('Generic.FileTypeInvalid'), '');
         return false
       }
       return true
@@ -92,7 +91,7 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
       }
     }
     if (rejectedFiles.length > 0) {
-      CreateNotification('error', t('Generic.FileTooLarge'))
+      //  CreateNotification('error', t('Generic.FileTooLarge'))
       console.log('Error on selected file : ', rejectedFiles[0].errors[0].code)
     }
   }
@@ -129,31 +128,52 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
   }, [])
 
   return (
-    <div >
-      <div className='d-flex justify-content-between font-md mb-3' style={{ fontSize: '20px' }}>
-        <div><IconX name='iconsminds-remove' onClick={() => changeZoomValue(-0.1)} /> {t("generic.zoom")} <IconX name='iconsminds-add' onClick={() => changeZoomValue(0.1)} /></div>
-        <div><IconX name='iconsminds-remove' onClick={() => changeRotationValue(-5)} /> {t("generic.rotation")} <IconX name='iconsminds-add' onClick={() => changeRotationValue(5)} /></div>
-        <div>
-          <CancelButton onClick={closeImageLoader} />
-          <ConfirmButton onClick={showCroppedImage} />
-        </div>
-      </div>
-      <Dropzone onDrop={onDrop} maxSize={maxSize} multiple={false} acceptedFileTypes={acceptedFileTypes}>
-        {({ getRootProps, getInputProps }) => (
-          <section>
-            <div {...getRootProps(style)}>
-              <input {...getInputProps()} />
-              <div style={style} >
-                {t('generic.loadImageInstructions')}
-              </div>
-            </div>
-          </section>
-        )}
-      </Dropzone>
 
-      <div>
+
+    <Grid container spacing={3}>
+      <Grid item xs={6} textAlign={'center'} alignContent={'center'}>
+        <IconAspectRatio />
+        <Slider value={zoomValue}
+          min={1}
+          max={3}
+          step={0.1}
+          marks
+          aria-labelledby="Zoom"
+          onChange={(e, zoom) => changeZoomValue(zoom)}
+          classes={{ container: 'slider' }}
+        />
+      </Grid>
+      <Grid item xs={6} textAlign={'center'} alignContent={'center'}>
+        <IconRotate />
+        <Slider value={rotationValue}
+          min={0}
+          max={360}
+          step={5}
+          aria-labelledby="Zoom"
+          onChange={(e, rotation) => changeRotationValue(rotation)}
+          classes={{ container: 'slider' }}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <Dropzone onDrop={onDrop} maxSize={maxSize} multiple={false} acceptedFileTypes={acceptedFileTypes}>
+          {({ getRootProps, getInputProps }) => (
+            <section>
+              <div {...getRootProps(style)}>
+                <input {...getInputProps()} />
+                <div style={style} >
+                  Arrastre Imagen o de click para seleccionar de dispositivo
+                </div>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+
+      </Grid>
+
+      <Grid item xs={12} style={{ height: '400px' }}>
         {srcImage !== null
-          ? <div style={{ width: '600px', height: '450px', position: 'relative' }} className='d-flex flex-row justify-content-center mt-3'  >
+          ? <div className='crop-container' >
             <Cropper
               image={srcImage}
               crop={crop}
@@ -170,9 +190,14 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
           : ''
 
         }
-      </div>
-
-    </div>
+      </Grid>
+      <Grid item xs={12} >
+        <Stack spacing={2} direction='row' justifyContent='end' paddingTop={3}>
+          <Button onClick={closeImageLoader} variant='contained'>cancelar</Button>
+          <Button onClick={showCroppedImage} variant='contained'>aceptar</Button>
+        </Stack>
+      </Grid>
+    </Grid>
   )
 }
 

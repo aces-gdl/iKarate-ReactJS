@@ -1,16 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps, react/display-name, no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
 import Axios from "axios";
-import React, { useEffect, useState, forwardRef } from "react";
+import React, { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import PropTypes from "prop-types";
 import ImageCropper from './ImageCropper';
 import { Button, Dialog, DialogActions, DialogContent, Modal, ModalBody, Stack } from "@mui/material";
 import { IconPictureInPictureOn } from "@tabler/icons";
 import { Buffer } from 'buffer'
-import { ImagesearchRollerOutlined } from "@mui/icons-material";
-import './styles.css'
-import notFound from './karate60.png'
-
+import notFound from './../../images/notfound.png'
 
 const MyLoadImageFromURL = forwardRef((props, ref) => {
   const [picBase64, setPicBase64] = useState("");
@@ -20,10 +17,10 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
   const [imageFound, setImageFound] = useState(true);
   const [loadedImage, setLoadedImage] = useState('');
 
-  const { imageid, id, handleupdate, imagename, loadimage, name, thumbnail, avatar } = props
-
+  const  { id, handleupdate, username, loadimage, name, thumbnail, imageid, imagename } = props
+/*
   const loadpicture = () => {
-    if (!ImagesearchRollerOutlined) return;
+    if (!imageid) return;
 
     const preview = document.getElementById(id);
 
@@ -35,6 +32,7 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
       .then((response) => {
         let base64ToString = Buffer.from(response.data, "base64").toString();
         preview.setAttribute("src", `data:image/jpeg;base64,${base64ToString}`);
+
       })
       .catch((error) => {
         console.log(error)
@@ -49,7 +47,7 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
 
   }, []);
 
-
+*/
   const GetPicture = () => {
     if (loadimage) {
       setIsCropperOpen(true);
@@ -114,43 +112,36 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
   }
   const getInitials = (username) => {
     let initials = '';
-    username.split(' ').forEach((word) => { initials += word[0].toString().toUpperCase() })
+    imagename.split(' ').forEach((word) => { initials += word[0].toString().toUpperCase() })
     return initials;
   }
   let myURL = thumbnail ? `/v1/utility/image?ID=${imageid}&thumb=true` : `/v1/utility/image?ID=${imageid}`
-  let myClassName = avatar ? 'circle': '';
+  let myClassName = thumbnail ? 'circle' : '';
   return (
     <>
-      <div hidden={!imageFound} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <object data={myURL} type="image/png">
-          <img alt={getInitials} src={notFound} />
-
-        </object>
-        <img
-          {...props}
-          hidden={!imageFound}
-          loading='lazy'
-          alt={getInitials}
-          onClick={GetPicture}
-          src={myURL}
-          className={myClassName}
-         
-        />
-      </div>
+      {imageid && imageid.length > 0 && (
+        <div hidden={!imageFound}  >
+          <img
+            {...props}
+            className={myClassName}
+            hidden={!imageFound}
+            loading='lazy'
+            alt="preview"
+            onClick={GetPicture}
+            src={myURL}
+            onError={(e) => { e.target.onerror = null; setImageFound(false); console.log('Imagen no encontrada...'); }}
+          />
+        </div>
+      )}
 
       {!imageFound && (
         <>
           {imagename && imagename.length > 0 && (
-            <div className='circle' onClick={GetPicture} >{getInitials(imagename)}</div>
+            <div hidden={imageFound} className={myClassName} onClick={GetPicture} {...props}>{getInitials(props.username)}</div>
           )}
-          {!imagename && (
-            <div
-              className='d-flex align-self-center justify-center h2 justify-content-center'
-              style={{ height: props.height, border: "1px", borderColor: "gray", borderStyle: "dashed", borderRadius: "5px" }} >
-              <div style={{ height: 43 }} className='align-self-center'>
-                Not Found image
-                <IconPictureInPictureOn onClick={GetPicture} />
-              </div>
+          {!imagename  && (
+            <div>
+              <img src={notFound} alt='No ID' {...props}  className={myClassName}/>
             </div>
           )}
         </>
@@ -181,10 +172,11 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
 const LoadImageFromURL = React.memo(MyLoadImageFromURL);
 
 LoadImageFromURL.propTypes = {
-  id: PropTypes.string,
-  imagename: PropTypes.string,
-  imageid:PropTypes.string,
-  thumbnail:PropTypes.bool
+  id: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  thumbnail: PropTypes.string,
+  handleupdate: PropTypes.func
+
 }
 
 export default LoadImageFromURL;

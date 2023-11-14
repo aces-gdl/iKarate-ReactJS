@@ -1,17 +1,16 @@
 import * as React from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { Button, Card, CardContent, Dialog, Grid, Paper, Table, TableBody, TableCell, TableRow } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { useAlert } from 'react-alert';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import View from './View';
-import { IconCirclePlus } from '@tabler/icons';
-import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import LoadImageFromURL from 'components/LoadImageFromURL';
+import './styles.css';
+
 
 export default function BrowserList() {
     const navigate = useNavigate();
@@ -21,16 +20,8 @@ export default function BrowserList() {
     const [currentRow, setCurrenRow] = React.useState({});
     const [viewOpen, setViewOpen] = React.useState(false);
 
-    const columns = [
-        { id: 'GivenName', label: 'Nombre', minWidth: 100, FormatDisplay: 'Text' },
-        { id: 'FamilyName', label: 'Apellido', minWidth: 100, FormatDisplay: 'Text' },
-        { id: 'Belt', label: 'Cinta', minWidth: 50, FormatDisplay: 'Text' },
-        { id: 'PermissionID', label: 'Permisos', minWidth: 100, FormatDisplay: 'Text' },
-        { id: 'actions', label: 'Acciones', minWidth: 30, FormatDisplay: 'actions', align: 'center' }
-    ];
 
-    const mainTitle = 'Cataloo de usuarios'
-    const loadMainData = (newPage) => {
+    const loadMainData = () => {
         axios.get('/v1/catalogs/users?limit=-1')
             .then((response) => {
                 setRows(response.data.data)
@@ -47,30 +38,32 @@ export default function BrowserList() {
         loadMainData(1);
     }, [])
 
-    const openAdd = () => {
-        alert.success('Open Add')
-    }
 
-    const openView = (row) => {
-        setCurrenRow(row);
-        setViewOpen(true);
 
-    }
 
-    const openUpdate = () => {
-        alert.success('Open Update')
-    }
-
-    const handleClose = () => {
-        setViewOpen(false);
-    }
 
 
     const RenderCard = (row) => {
         return (
             <Grid item sm={12} md={6} lg={4} >
                 <SubCard  title={row.Name} >
-                    <LoadImageFromURL imageid={row.ID} imagename={row.Name}  thumbnail/>
+                    <Grid container spacing={2}>
+                        <Grid item xs={3} >
+                            <LoadImageFromURL imageid={row.ID} imagename={row.Name} height='100px' thumbnail />
+
+                        </Grid>
+                        <Grid item xs={9}>
+                            <Grid container spacing={1} >
+                                <Grid item xs={3}><Typography variant='h4'>Cinta:</Typography></Grid>
+                                <Grid item xs={5}><Typography variant='body1'>{row.CategoryDescription} </Typography></Grid>
+                                <Grid item xs={4} ><Typography variant='body1'><div style={{background:`linear-gradient(to right,${row.Color1},${row.Color2})`}}>. </div></Typography></Grid>
+                            </Grid>
+                            <Grid container spacing={1} >
+                                <Grid item xs={3}><Typography variant='h4'>Correo:</Typography></Grid>
+                                <Grid item xs={9}><Typography variant='body1'>{row.Email}</Typography></Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </SubCard>
                 </Grid>
         )

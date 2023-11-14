@@ -33,11 +33,13 @@
   }
   
   .circle {
-    background-color: #ccc;
+    background-color: navajowhite;
     border-radius: 50%;
     height: var(--avatar-size);
-    text-align: center;
     width: var(--avatar-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .initials {

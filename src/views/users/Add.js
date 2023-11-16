@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, FormControl, Grid, TextField } from '@mui/material'
+import { Button, DialogActions, DialogContent, DialogTitle, FormControl, Grid, TextField, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import axios from 'axios'
 import BeltSelector from 'components/BeltSelector'
@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react'
 
 const Add = (props) => {
     const { handleClose } = props
-    const { CategoryID, GivenName, FamilyName,Email,ID } = props.row
     const [values, setValues] = useState({
         CategoryID: '',
         GivenName: '',
@@ -28,16 +27,7 @@ const Add = (props) => {
         }
     };
 
-    useEffect(() => {
-        setValues({
-            CategoryID: CategoryID,
-            GivenName: GivenName,
-            FamilyName: FamilyName,
-            Email: Email,
-            ID: ID
-        })
-    }, [])
-
+  
 
     const createUser = () => {
         const payload = {
@@ -72,10 +62,8 @@ const Add = (props) => {
 
     return (
         <div>
-            <DialogTitle align='center' variant=''>Datos de usuario</DialogTitle>
+            <DialogTitle align='center'  ><Typography variant='h2' sx={{backgroundColor:'lightgray'}}>Datos de alumno</Typography></DialogTitle>
             <DialogContent >
-
-
                 <Grid container spacing={3} >
                     <Grid item xs={6}>
                         <TextField
@@ -86,10 +74,8 @@ const Add = (props) => {
                             value={values.GivenName}
                             onChange={handleUpdate}
                         />
-
                     </Grid>
                     <Grid item xs={6}>
-
                         <TextField
                             style={{ marginTop: '10px' }}
                             fullWidth
@@ -116,7 +102,6 @@ const Add = (props) => {
                                 onChange={(newValue) => handleDateUpdate(newValue, "Birthday")}
                             />
                         </FormControl>
-
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -127,25 +112,24 @@ const Add = (props) => {
                             value={values.Email}
                             onChange={handleUpdate}
                         />
-
                     </Grid>
                     <Grid item xs={12} alignItems={'center'}>
+                        aqui
                         <LoadImageFromURL
                             loadimage
                             id="myImage"
                             name="myImage"
-                            imageid={values.ID}
-                            imagename={props.Name}
                             handleupdate={handleUpdate}
-                            width='100%'
+                            height='200px'
+                            src={values.myImage}
                         />
                     </Grid>
                 </Grid>
 
             </DialogContent>
             <DialogActions>
-                <Button variant='outlined' onClick={handleClose}>Cancelar</Button>
-                <Button variant='outlined' onClick={handleClose}>Aceptar</Button>
+                <Button variant='contained' color={'error'} onClick={handleClose}>Cancelar</Button>
+                <Button variant='contained' color={'secondary'} onClick={handleClose}>Crear</Button>
             </DialogActions>
         </div>
     )

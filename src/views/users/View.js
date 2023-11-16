@@ -145,7 +145,6 @@ const View = (props) => {
             </DialogContent>
             <DialogActions>
                 <Button variant='outlined' onClick={handleClose}>Cancelar</Button>
-                <Button variant='outlined' onClick={handleClose}>Aceptar</Button>
             </DialogActions>
         </div>
     )

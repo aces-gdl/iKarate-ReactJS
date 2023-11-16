@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import axios from "axios";
 import { useAlert } from 'react-alert';
+import { Box } from "@mui/system";
 
 
 const clientId = '922396994640-0g6k9ks443ps0hfqs60c4lnheqsrchpp.apps.googleusercontent.com';
@@ -53,7 +54,7 @@ function GoogleAuth() {
   };
 
   return (
-    <div >
+   <Box display={'flex'} justifyContent={'center'}>
     
         <GoogleLogin
           clientId={clientId}
@@ -63,7 +64,7 @@ function GoogleAuth() {
           cookiePolicy={'single_host_origin'}
           isSignedIn={true}
         />
-    </div>
+    </Box>
   )
 }
 

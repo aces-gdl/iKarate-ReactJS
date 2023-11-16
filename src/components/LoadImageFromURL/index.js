@@ -4,54 +4,21 @@ import Axios from "axios";
 import React, { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import PropTypes from "prop-types";
 import ImageCropper from './ImageCropper';
-import { Button, Dialog, DialogActions, DialogContent, Modal, ModalBody, Stack } from "@mui/material";
-import { IconPictureInPictureOn } from "@tabler/icons";
-import { Buffer } from 'buffer'
+import { Box, Button, Dialog, DialogActions, DialogContent, Modal, ModalBody, Stack } from "@mui/material";
 import notFound from './../../images/notfound.png'
 
-const MyLoadImageFromURL = forwardRef((props, ref) => {
+const MyLoadImageFromURL = (props) => {
   const [picBase64, setPicBase64] = useState("");
   const [isCropperOpen, setIsCropperOpen] = useState(false)
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const [finalImage, setFinalImage] = useState('');
-  const [imageFound, setImageFound] = useState(true);
+  const [imageFound, setImageFound] = useState(false);
   const [loadedImage, setLoadedImage] = useState('');
 
-  const  { id, handleupdate, username, loadimage, name, thumbnail, imageid, imagename } = props
-/*
-  const loadpicture = () => {
-    if (!imageid) return;
+  const { id, handleupdate, name, thumbnail, imageid, imagename } = props
 
-    const preview = document.getElementById(id);
-
-    if (!preview) return;
-    let myURL = '/v1/utility/image?ID=' + imageid
-    myURL = myURL + (thumbnail ? '&thumbnail=true' : '')
-    setImageFound(true);
-    Axios.get(myURL)
-      .then((response) => {
-        let base64ToString = Buffer.from(response.data, "base64").toString();
-        preview.setAttribute("src", `data:image/jpeg;base64,${base64ToString}`);
-
-      })
-      .catch((error) => {
-        console.log(error)
-      }
-      )
-
-  };
-
-  useEffect(() => {
-
-    //   loadpicture();
-
-  }, []);
-
-*/
   const GetPicture = () => {
-    if (loadimage) {
-      setIsCropperOpen(true);
-    }
+    setIsCropperOpen(true);
   }
 
   const onClose = () => {
@@ -117,36 +84,80 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
   }
   let myURL = thumbnail ? `/v1/utility/image?ID=${imageid}&thumb=true` : `/v1/utility/image?ID=${imageid}`
   let myClassName = thumbnail ? 'circle' : '';
-  return (
-    <>
-      {imageid && imageid.length > 0 && (
-        <div hidden={!imageFound}  >
+
+
+  const HandleNotFoundImage = (e) => {
+    e.target.onerror = null;
+    console.log('Imagen no encontrada...');
+    setImageFound(false);
+    setFinalImage(notFound);
+  }
+
+
+  const DisplayImage2 = () => {
+
+    if (imageid && imageid.length > 0) {
+      return (
+        <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
+          Con ID
           <img
             {...props}
             className={myClassName}
-            hidden={!imageFound}
-            loading='lazy'
-            alt="preview"
             onClick={GetPicture}
             src={myURL}
-            onError={(e) => { e.target.onerror = null; setImageFound(false); console.log('Imagen no encontrada...'); }}
+            onError={(e) => HandleNotFoundImage(e)}
           />
-        </div>
-      )}
+        </Box>
+      )
+    } else if (imagename && imagename.length > 0) {
+      return (
+        <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
+          Con Nombre
+          <img {...props} className={myClassName} onClick={GetPicture} alt={getInitials(props.username)} />
+        </Box>
+      )
 
-      {!imageFound && (
-        <>
-          {imagename && imagename.length > 0 && (
-            <div hidden={imageFound} className={myClassName} onClick={GetPicture} {...props}>{getInitials(props.username)}</div>
-          )}
-          {!imagename  && (
-            <div>
-              <img src={notFound} alt='No ID' {...props}  className={myClassName}/>
-            </div>
-          )}
-        </>
-      )}
+    } else {
+      return (
+        <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
+          Final
+          <img   {...props} src={notFound} alt='No ID' className={myClassName} onClick={GetPicture} />
+        </Box>
+      )
+    }
+  }
 
+  const DisplayImage = () => {
+
+
+    return (
+      <img
+        onChange={handleupdate}
+        className={myClassName}
+        onClick={GetPicture}
+        src={finalImage}
+        alt="Image"
+      />
+    )
+  }
+
+  useEffect(() => {
+
+    if (!imageid && !imagename) {
+      setFinalImage(notFound)
+    } else if (imageid && imageid.length >0) {
+      setFinalImage(myURL)
+    } else if (imagename && imagename.length >0){
+      console.log ("poner iniciales")
+    }
+
+
+  }, [])
+
+  return (
+    <>
+
+      <DisplayImage />
 
       <Dialog open={isCropperOpen} onClose={onClose} fullWidth>
         <DialogContent>
@@ -167,13 +178,12 @@ const MyLoadImageFromURL = forwardRef((props, ref) => {
       </Dialog>
     </>
   );
-});
+};
 
 const LoadImageFromURL = React.memo(MyLoadImageFromURL);
 
 LoadImageFromURL.propTypes = {
   id: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
   handleupdate: PropTypes.func
 

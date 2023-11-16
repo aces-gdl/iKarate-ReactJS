@@ -56,6 +56,7 @@ function GoogleAuthSignup() {
     };
 
     const logOut = () => {
+        
         setProfile(null);
     };
 

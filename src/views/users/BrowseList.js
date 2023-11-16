@@ -21,19 +21,25 @@ export default function BrowserList() {
 
     const [rows, setRows] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
+    const [schedules, setSchedules] = React.useState([]);
     const [currentRow, setCurrenRow] = React.useState({});
     const [viewOpen, setViewOpen] = React.useState(false);
     const [addOpen, setAddOpen] = React.useState(false);
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({
+        categoryid: 'todos',
+        attendingclassid: 'todos'
+    });
 
     const loadComboData = () => {
         let myPromises = [
-            axios.get('/v1/catalogs/category?page=-1')
+            axios.get('/v1/catalogs/category?page=-1'),
+            axios.get('/v1/catalogs/schedule?page=-1'),
+
         ]
         Promise.all(myPromises)
             .then((responses) => {
-                setCategories(responses[0].data.data)
-
+                setCategories(responses[0].data.data);
+                setSchedules(responses[1].data.data);
             })
             .catch((err) => {
                 console.log("Error : ", err)
@@ -89,7 +95,7 @@ export default function BrowserList() {
                     </Box>
                     <Divider variant={'fullWidth'} />
                     <Box paddingX={2} display={'flex'} paddingY={1} justifyContent={'space-between'} >
-                        
+
                         <Typography variant='subtitle2' component={'h2'}>Inscrito en : 02/10/2022</Typography>
                         <Typography variant='subtitle2' component={'h2'}>Contacto : Don Panchito (33) 3238-2859</Typography>
 
@@ -108,40 +114,40 @@ export default function BrowserList() {
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
                 <FormControl fullWidth sx={{ marginRight: 2 }}>
-                    <InputLabel id="Category">Horario</InputLabel>
+                    <InputLabel id="HorarioL">Horario</InputLabel>
                     <Select
-                        labelId="Categoryl"
-                        id="CategoryL"
-                        name="category"
-                        value={values.category}
-                        label="Category"
+                        labelId="Schedule"
+                        id="AttendingClassID"
+                        name="attendingclassid"
+                        value={values.attendingclassid}
                         onChange={handleUpdate}
                     >
-                        {categories.map((row) => {
-                            return <MenuItem value={row.ID} color={row.Color}>
-                                <Grid container xs={12}>
-                                    <Grid item xs={10}>{row.Description}</Grid>
-                                    <Grid item xs={1} ><Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: `${row.Color1}`, border: 0.5 }}><IconCircle color={row.Color1} /></Box></Grid>
-                                    <Grid item xs={1} ><Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: `${row.Color2}`, border: 0.5 }}><IconCircle color={row.Color2} /></Box></Grid>
+                        <MenuItem value='todos'>Todos</MenuItem>
+                        {schedules.map((row) => {
+                            return <MenuItem value={row.ID} id={row.ID}>
+                                <Grid container >
+                                    <Grid item xs={12}>{row.Description}</Grid>
                                 </Grid>
                             </MenuItem>
                         })}
                     </Select>
                 </FormControl>
                 <FormControl fullWidth sx={{ marginRight: 2, marginLeft: 2 }}>
-                    <InputLabel id="Category">Cinturon</InputLabel>
+                    <InputLabel id="CinturonL">Cinturon</InputLabel>
                     <Select
-                        labelId="Categoryl"
-                        id="CategoryL"
-                        name="category"
-                        value={values.category}
-                        label="Category"
+                        labelId="CinturonL"
+                        id="CinturonL"
+                        name="categoryid"
+                        value={values.categoryid}
                         onChange={handleUpdate}
                     >
+                        <MenuItem value='todos'>Todos</MenuItem>
                         {categories.map((row) => {
-                            return <MenuItem value={row.ID} color={row.Color}>
-                                <Grid container xs={12}>
-                                    <Grid item xs={12}>{row.Description}</Grid>
+                            return <MenuItem value={row.ID} id={row.ID}>
+                                <Grid container >
+                                    <Grid item xs={10}>{row.Description}</Grid>
+                                    <Grid item xs={1} ><Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: `${row.Color1}`, border: 0.5 }}><IconCircle color={row.Color1} /></Box></Grid>
+                                    <Grid item xs={1} ><Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: `${row.Color2}`, border: 0.5 }}><IconCircle color={row.Color2} /></Box></Grid>
                                 </Grid>
                             </MenuItem>
                         })}

@@ -119,9 +119,8 @@ const Add = (props) => {
                             loadimage
                             id="myImage"
                             name="myImage"
-                            handleupdate={handleUpdate}
+                            handleupdate={handleImageUpdate}
                             height='200px'
-                            src={values.myImage}
                         />
                     </Grid>
                 </Grid>

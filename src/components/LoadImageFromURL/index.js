@@ -184,7 +184,6 @@ const LoadImageFromURL = React.memo(MyLoadImageFromURL);
 
 LoadImageFromURL.propTypes = {
   id: PropTypes.string.isRequired,
-  thumbnail: PropTypes.string,
   handleupdate: PropTypes.func
 
 }

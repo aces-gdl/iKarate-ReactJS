@@ -3,6 +3,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import axios from 'axios'
 import BeltSelector from 'components/BeltSelector'
 import LoadImageFromURL from 'components/LoadImageFromURL'
+import SelectCategories from 'components/SelectCategories'
 import React, { useEffect, useState } from 'react'
 
 const Add = (props) => {
@@ -86,11 +87,7 @@ const Add = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <BeltSelector
-                            name='CategoryID'
-                            value={values.CategoryID}
-                            onChange={handleUpdate}
-                        />
+                    <SelectCategories name='CategoryID' value={values.CategoryID} handleupdate={handleUpdate} />
 
                     </Grid>
                     <Grid item xs={6}>
@@ -114,7 +111,6 @@ const Add = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12} alignItems={'center'}>
-                        aqui
                         <LoadImageFromURL
                             loadimage
                             id="myImage"

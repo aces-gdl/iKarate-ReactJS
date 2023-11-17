@@ -13,6 +13,8 @@ import { useState } from 'react';
 import { IconCircle, IconPencil } from '@tabler/icons';
 import Add from './Add';
 import View from './View';
+import SelectCategories from 'components/SelectCategories';
+import SelectSchedules from 'components/SelectSchedules';
 
 
 export default function BrowserList() {
@@ -26,8 +28,8 @@ export default function BrowserList() {
     const [viewOpen, setViewOpen] = React.useState(false);
     const [addOpen, setAddOpen] = React.useState(false);
     const [values, setValues] = useState({
-        categoryid: 'todos',
-        attendingclassid: 'todos'
+        CategoryID: 'todos',
+        AttandingClassID: 'todos'
     });
 
     const loadComboData = () => {
@@ -87,10 +89,10 @@ export default function BrowserList() {
 
     const RenderCard = (row) => {
         return (
-            <Grid item sm={12} md={6} lg={4} >
+            <Grid item sm={12} md={6} lg={4} key={row.ID} >
                 <Paper elevation={2} >
                     <Box paddingX={2} paddingTop={2} paddingBottom={1} display={'flex'} alignItems={'center'}>
-                        <LoadImageFromURL imageid={row.ID} imagename={row.Name} height='100px' thumbnail />
+                        <LoadImageFromURL id={row.ID} imageid={row.ID} imagename={row.Name} height='100px' thumbnail />
                         <Typography variant='h4' marginLeft={1.5} component={'h2'}> {row.Name} </Typography>
                     </Box>
                     <Divider variant={'fullWidth'} />
@@ -113,53 +115,16 @@ export default function BrowserList() {
                 <Typography variant='h2'>Catalogo de alumnos</Typography>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
-                <FormControl fullWidth sx={{ marginRight: 2 }}>
-                    <InputLabel id="HorarioL">Horario</InputLabel>
-                    <Select
-                        labelId="Schedule"
-                        id="AttendingClassID"
-                        name="attendingclassid"
-                        value={values.attendingclassid}
-                        onChange={handleUpdate}
-                    >
-                        <MenuItem value='todos'>Todos</MenuItem>
-                        {schedules.map((row) => {
-                            return <MenuItem value={row.ID} id={row.ID}>
-                                <Grid container >
-                                    <Grid item xs={12}>{row.Description}</Grid>
-                                </Grid>
-                            </MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
-                <FormControl fullWidth sx={{ marginRight: 2, marginLeft: 2 }}>
-                    <InputLabel id="CinturonL">Cinturon</InputLabel>
-                    <Select
-                        labelId="CinturonL"
-                        id="CinturonL"
-                        name="categoryid"
-                        value={values.categoryid}
-                        onChange={handleUpdate}
-                    >
-                        <MenuItem value='todos'>Todos</MenuItem>
-                        {categories.map((row) => {
-                            return <MenuItem value={row.ID} id={row.ID}>
-                                <Grid container >
-                                    <Grid item xs={10}>{row.Description}</Grid>
-                                    <Grid item xs={1} ><Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: `${row.Color1}`, border: 0.5 }}><IconCircle color={row.Color1} /></Box></Grid>
-                                    <Grid item xs={1} ><Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: `${row.Color2}`, border: 0.5 }}><IconCircle color={row.Color2} /></Box></Grid>
-                                </Grid>
-                            </MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
+
+                <SelectCategories name='CategoryID' value={values.CategoryID} handleupdate={handleUpdate}/> 
+                <SelectSchedules name='AttandingClassID' value={values.AttandingClassID} handleupdate={handleUpdate}/>
                 <Button variant={'contained'} sx={{ marginLeft: 2, marginRight: 2 }}>Buscar</Button>
                 <Button variant={'contained'} sx={{ marginLeft: 2 }} color={'secondary'} onClick={openAdd}>Nuevo</Button>
             </Box>
             <Grid container spacing={2} paddingY={2}>
                 {rows.map((row) => RenderCard(row))}
             </Grid>
-            <Dialog open={addOpen} onClose={handleClose} >
+            <Dialog open={addOpen} onClose={handleClose} size={'lg'}>
                 <Add handleClose={handleClose} row={currentRow} />
             </Dialog>
             <Dialog open={viewOpen} onClose={handleClose} >

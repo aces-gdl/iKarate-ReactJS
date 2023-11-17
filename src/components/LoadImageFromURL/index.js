@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import ImageCropper from './ImageCropper';
 import { Box, Button, Dialog, DialogActions, DialogContent, Modal, ModalBody, Stack } from "@mui/material";
 import notFound from './../../images/notfound.png'
+import { height } from "@mui/system";
 
 const MyLoadImageFromURL = (props) => {
   const [picBase64, setPicBase64] = useState("");
@@ -131,13 +132,18 @@ const MyLoadImageFromURL = (props) => {
 
 
     return (
+      <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
       <img
+        id={id}
+        name={name}
+        height={props.height}
         onChange={handleupdate}
         className={myClassName}
         onClick={GetPicture}
         src={finalImage}
         alt="Image"
       />
+      </Box>
     )
   }
 

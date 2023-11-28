@@ -30,9 +30,10 @@ const SelectSchedules = (props) => {
             <InputLabel id="HorarioL">Horario</InputLabel>
             <Select
                 labelId="HorarioL"
-                id="AttendingClassID"
+                id={props.name}
                 name={props.name}
                 value={props.value}
+                label="Horario"
                 onChange={props.handleUpdate}
             >
                 <MenuItem value='todos' key='AllSchedules'>Todos</MenuItem>

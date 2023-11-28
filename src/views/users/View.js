@@ -137,7 +137,7 @@ const View = (props) => {
                             imageid={values.ID}
                             imagename={props.Name}
                             handleupdate={handleUpdate}
-                            width='100%'
+                            height='200px'
                         />
                     </Grid>
                 </Grid>

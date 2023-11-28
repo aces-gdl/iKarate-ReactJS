@@ -49,6 +49,8 @@
     top: calc(var(--avatar-size) / 4); /* 25% of parent */
   }
   :root {
-    --avatar-size: 60px;
+    --avatar-size: 50px;
     /* change this value anything, e.g., 100px, 10rem, etc. */
   }
+
+  

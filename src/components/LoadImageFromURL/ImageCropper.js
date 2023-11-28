@@ -4,7 +4,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Dropzone from 'react-dropzone';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from './cropImage'
-import { IconMinus, IconPlus, IconRotate, IconAspectRatio } from '@tabler/icons';
+import { IconRotate, IconAspectRatio } from '@tabler/icons';
 import { Button, Grid, Slider, Stack } from '@mui/material';
 import './styles.css'
 
@@ -37,7 +37,7 @@ const rejectStyle = {
 };
 
 function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspectRatio }) {
-  const maxSize = 10000000;
+  const maxSize = 20000000;
   const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif, image/webp';
   const acceptedFileTypesArray = acceptedFileTypes.split(',').map((item) => item.trim());
   const [srcImage, setSrcImage] = useState(null)
@@ -135,7 +135,7 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
         <IconAspectRatio />
         <Slider value={zoomValue}
           min={1}
-          max={3}
+          max={7}
           step={0.1}
           marks
           aria-labelledby="Zoom"
@@ -179,6 +179,7 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
               crop={crop}
               rotation={rotationValue}
               zoom={zoomValue}
+              maxZoom={7}
               aspect={aspectRatio}
               onCropChange={setCrop}
               onRotationChange={setRotationValue}

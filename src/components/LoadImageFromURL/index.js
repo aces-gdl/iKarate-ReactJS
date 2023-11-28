@@ -9,17 +9,18 @@ import notFound from './../../images/notfound.png'
 import { height } from "@mui/system";
 
 const MyLoadImageFromURL = (props) => {
-  const [picBase64, setPicBase64] = useState("");
   const [isCropperOpen, setIsCropperOpen] = useState(false)
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const [finalImage, setFinalImage] = useState('');
-  const [imageFound, setImageFound] = useState(false);
-  const [loadedImage, setLoadedImage] = useState('');
+  const [imageFound, setImageFound] = useState(true);
 
-  const { id, handleupdate, name, thumbnail, imageid, imagename } = props
+  const { id, handleupdate, name, thumbnail, imageid, imagename, showinitials } = props
 
   const GetPicture = () => {
-    setIsCropperOpen(true);
+    if (handleupdate){
+      setIsCropperOpen(true);
+
+    }
   }
 
   const onClose = () => {
@@ -45,13 +46,15 @@ const MyLoadImageFromURL = (props) => {
   const handlecropperaccept = () => {
     console.log('Cropper Accept');
     const preview = document.getElementById(id);
+    preview.hidden = false;
     preview.setAttribute("src", finalImage);
-    setImageFound(true);
 
     setIsCropperOpen(false);
     setIsPreviewOpen(false);
+
     const canvas = document.createElement('canvas');
     canvas.setAttribute('src', finalImage)
+    
 
     fetch(preview.src)
       .then((res) => res.blob())
@@ -59,6 +62,7 @@ const MyLoadImageFromURL = (props) => {
         const reader = new FileReader();
         reader.onloadend = () => {
           let file = dataURLtoBlob(reader.result);
+
           if (handleupdate) {
             const myEvent = {
               target: {
@@ -78,54 +82,11 @@ const MyLoadImageFromURL = (props) => {
   const closeImageLoader = () => {
     setIsCropperOpen(false);
   }
-  const getInitials = (username) => {
-    let initials = '';
-    imagename.split(' ').forEach((word) => { initials += word[0].toString().toUpperCase() })
-    return initials;
-  }
-  let myURL = thumbnail ? `/v1/utility/image?ID=${imageid}&thumb=true` : `/v1/utility/image?ID=${imageid}`
-  let myClassName = thumbnail ? 'circle' : '';
 
-
-  const HandleNotFoundImage = (e) => {
-    e.target.onerror = null;
-    console.log('Imagen no encontrada...');
-    setImageFound(false);
-    setFinalImage(notFound);
-  }
-
-
-  const DisplayImage2 = () => {
-
-    if (imageid && imageid.length > 0) {
-      return (
-        <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
-          Con ID
-          <img
-            {...props}
-            className={myClassName}
-            onClick={GetPicture}
-            src={myURL}
-            onError={(e) => HandleNotFoundImage(e)}
-          />
-        </Box>
-      )
-    } else if (imagename && imagename.length > 0) {
-      return (
-        <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
-          Con Nombre
-          <img {...props} className={myClassName} onClick={GetPicture} alt={getInitials(props.username)} />
-        </Box>
-      )
-
-    } else {
-      return (
-        <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
-          Final
-          <img   {...props} src={notFound} alt='No ID' className={myClassName} onClick={GetPicture} />
-        </Box>
-      )
-    }
+  const handelOnImageError = (currentTarget) => {
+    currentTarget.onerror = null;
+    currentTarget.src = notFound;
+    console.error("Error al cargar la imagen ");
   }
 
   const DisplayImage = () => {
@@ -133,38 +94,73 @@ const MyLoadImageFromURL = (props) => {
 
     return (
       <Box display={'flex'} alignContent={'center'} justifyContent={'center'} >
-      <img
-        id={id}
-        name={name}
-        height={props.height}
-        onChange={handleupdate}
-        className={myClassName}
-        onClick={GetPicture}
-        src={finalImage}
-        alt="Image"
-      />
+        <img
+          id={id}
+          name={name}
+          height={props.height}
+          onChange={handleupdate}
+          className={myClassName}
+          onClick={GetPicture}
+          src={finalImage}
+          alt=""
+          onError={({ currentTarget }) => {
+            handelOnImageError(currentTarget)
+          }}
+        />
       </Box>
     )
   }
+
+  const GetInitials = () => {
+    let initials = '';
+    imagename.split(' ').forEach((word) => { initials += word[0].toString().toUpperCase() })
+    return (
+      <div id='myInitials' hidden={false} classsName={myClassName} onClick={GetPicture}>{initials}</div>
+    )
+  }
+
 
   useEffect(() => {
 
     if (!imageid && !imagename) {
       setFinalImage(notFound)
-    } else if (imageid && imageid.length >0) {
+    } else if (imageid && imageid.length > 0) {
       setFinalImage(myURL)
-    } else if (imagename && imagename.length >0){
-      console.log ("poner iniciales")
+    } else if (imagename && imagename.length > 0) {
+      setFinalImage('');
+      setImageFound(false);
+      console.log("poner iniciales")
     }
-
 
   }, [])
 
+  var myURL = thumbnail ? `/v1/utility/image?ID=${imageid}&thumb=true` : `/v1/utility/image?ID=${imageid}`
+  var myClassName = thumbnail ? 'circle' : '';
+
   return (
     <>
+      {imageid && imageid.length > 0 && (
+        <DisplayImage />
 
-      <DisplayImage />
+      )}
 
+      {showinitials && (
+        <>
+
+          <GetInitials />
+          <img
+            hidden
+            id={id}
+            name={name}
+            height={props.height}
+            onChange={handleupdate}
+            className={myClassName}
+            onClick={GetPicture}
+            alt=""
+          />
+        </>
+
+      )}
       <Dialog open={isCropperOpen} onClose={onClose} fullWidth>
         <DialogContent>
           <ImageCropper setFinalImage={(i) => setFinalImage(i)} setIsPreviewOpen={setIsPreviewOpen} closeImageLoader={closeImageLoader} aspectRatio={props.aspectRatio} />

@@ -96,10 +96,48 @@ export default function BrowserList() {
                         <Typography variant='h4' marginLeft={1.5} component={'h2'}> {row.Name} </Typography>
                     </Box>
                     <Divider variant={'fullWidth'} />
-                    <Box paddingX={2} display={'flex'} paddingY={1} justifyContent={'space-between'} >
 
-                        <Typography variant='subtitle2' component={'h2'}>Inscrito en : 02/10/2022</Typography>
-                        <Typography variant='subtitle2' component={'h2'}>Contacto : Don Panchito (33) 3238-2859</Typography>
+                    <Box display={'flex'} alignItems='center' justifyContent='space-between' paddingTop={2} >
+
+                        <Box paddingX={2} display={'flex'} alignItems='center'  >
+                            <Typography variant='subtitle1' component='p'>Alumno desde :</Typography>
+                            <Typography variant='subtitle2' component='p' paddingLeft={0.5}>02/10/2022</Typography>
+
+                        </Box>
+
+                        <Box paddingX={2} display={'flex'}  alignItems='center'  >
+                            <Typography variant='subtitle1' component='p'>Cinta :</Typography>
+                            <Typography variant='subtitle2' component='p' paddingLeft={0.5}>{row.CategoryDescription}</Typography>
+
+                        </Box>
+                    </Box>
+                    <Box display={'flex'} alignItems='center' justifyContent='space-between' >
+                        <Box paddingX={2} display={'flex'}  alignItems='center'  >
+
+                            <Typography variant='subtitle1' component='p'>Nacio el :</Typography>
+                            <Typography variant='subtitle2' component='p' paddingLeft={0.5}>{row.Birthday}</Typography>
+
+                        </Box>
+                        <Box paddingX={2} display={'flex'} alignItems='center'  >
+
+                            <Typography variant='subtitle1' component='p'>Seleccion:</Typography>
+                            <Typography variant='subtitle2' component='p' paddingLeft={0.5}>CODE</Typography>
+
+                        </Box>
+                    </Box>                 
+                    <Box display={'flex'} alignItems='center' justifyContent='space-between' paddingBottom={3}>
+                        <Box  paddingX={2} display={'flex'}  alignItems='center'  >
+
+                            <Typography variant='subtitle1' component='p'>Responsable :</Typography>
+                            <Typography variant='subtitle2' component='p' paddingLeft={0.5}>Doña lucita</Typography>
+
+                        </Box>
+                        <Box  paddingX={2} display={'flex'} alignItems='center'  >
+
+                            <Typography variant='subtitle1' component='p'>Telefono </Typography>
+                            <Typography variant='subtitle2' component='p' paddingLeft={0.5}>(33) 3238.8808</Typography>
+
+                        </Box>
 
                     </Box>
                     <Box display={'flex'} justifyContent={'end'}>
@@ -116,8 +154,8 @@ export default function BrowserList() {
             </Box>
             <Box display={'flex'} justifyContent={'space-between'}>
 
-                <SelectCategories name='CategoryID' value={values.CategoryID} handleupdate={handleUpdate}/> 
-                <SelectSchedules name='AttandingClassID' value={values.AttandingClassID} handleupdate={handleUpdate}/>
+                <SelectCategories name='CategoryID' value={values.CategoryID} handleupdate={handleUpdate} />
+                <SelectSchedules name='AttendingClassID' value={values.AttendingClassID} handleupdate={handleUpdate} />
                 <Button variant={'contained'} sx={{ marginLeft: 2, marginRight: 2 }}>Buscar</Button>
                 <Button variant={'contained'} sx={{ marginLeft: 2 }} color={'secondary'} onClick={openAdd}>Nuevo</Button>
             </Box>

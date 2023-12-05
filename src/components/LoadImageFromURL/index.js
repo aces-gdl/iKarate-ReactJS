@@ -1,12 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps, react/display-name, no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
-import Axios from "axios";
 import React, { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import PropTypes from "prop-types";
 import ImageCropper from './ImageCropper';
 import { Box, Button, Dialog, DialogActions, DialogContent, Modal, ModalBody, Stack } from "@mui/material";
 import notFound from './../../images/notfound.png'
-import { height } from "@mui/system";
 
 const MyLoadImageFromURL = (props) => {
   const [isCropperOpen, setIsCropperOpen] = useState(false)
@@ -125,7 +123,13 @@ const MyLoadImageFromURL = (props) => {
     if (!imageid && !imagename) {
       setFinalImage(notFound)
     } else if (imageid && imageid.length > 0) {
-      setFinalImage(myURL)
+      if (imageid === '1'){
+        setFinalImage(notFound)
+
+      }else{
+        setFinalImage(myURL)
+
+      }
     } else if (imagename && imagename.length > 0) {
       setFinalImage('');
       setImageFound(false);

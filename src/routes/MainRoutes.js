@@ -16,12 +16,9 @@ const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialI
 const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
-const ClubsBrowse = Loadable(lazy(() => import('views/clubs/Browse')));
-const DrawGroups = Loadable(lazy(() => import('views/groups/DrawGroups')));
 const UsersBrowse = Loadable(lazy(() => import('views/users')));
+const Dojos = Loadable(lazy(() => import('views/dojos')));
 const TournamentDashboard = Loadable(lazy(() => import('views/tournaments/Dashboard')))
-const TournamentEnrolledTeams = Loadable(lazy(() => import('views/teamsEnrolled/BrowseTeams')))
 const Tester = Loadable(lazy(() => import('ui-component/tables/Tester')))
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -89,29 +86,13 @@ const MainRoutes = {
             ]
         },
         {
-            path: 'sample-page',
-            element: <SamplePage />
-        },
-        {
-            path: 'views/clubs/Browse',
-            element: <ClubsBrowse />
-        },
-        {
-            path: 'views/groups/Draw',
-            element: <DrawGroups />
-        },
-        {
+            path: 'views/dojos',
+            element: <Dojos />
+        },{
             path: 'views/users',
             element: <UsersBrowse />
         },
-        {
-            path: 'views/tournament/dashboard',
-            element: <TournamentDashboard />
-        },
-        {
-            path: 'views/tournament/teamsenrolled',
-            element: <TournamentEnrolledTeams />
-        },
+    
         {
             path: 'views/test',
             element: <Tester />

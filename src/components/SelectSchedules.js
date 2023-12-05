@@ -26,7 +26,7 @@ const SelectSchedules = (props) => {
 
 
     return (
-        <FormControl fullWidth sx={{ marginRight: 2 }}>
+        <FormControl size='small' fullWidth sx={{ marginRight: 2 }}>
             <InputLabel id="HorarioL">Horario</InputLabel>
             <Select
                 labelId="HorarioL"
@@ -34,9 +34,9 @@ const SelectSchedules = (props) => {
                 name={props.name}
                 value={props.value}
                 label="Horario"
-                onChange={props.handleUpdate}
+                onChange={props.handleupdate}
             >
-                <MenuItem value='todos' key='AllSchedules'>Todos</MenuItem>
+                <MenuItem value='' key='AllSchedules'>Todos</MenuItem>
                 {schedules.map((row,index) => (
                     <MenuItem value={row.ID} key={`ss-${index}`}>
                         {row.Description}

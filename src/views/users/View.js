@@ -1,8 +1,8 @@
 import { Button, DialogActions, DialogContent, DialogTitle, FormControl, Grid, TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import axios from 'axios'
-import BeltSelector from 'components/BeltSelector'
 import LoadImageFromURL from 'components/LoadImageFromURL'
+import SelectCategories from 'components/SelectCategories'
 import React, { useEffect, useState } from 'react'
 
 const View = (props) => {
@@ -100,11 +100,7 @@ const View = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <BeltSelector
-                            name='CategoryID'
-                            value={values.CategoryID}
-                            onChange={handleUpdate}
-                        />
+                        <SelectCategories name='CategoryID' value={values.CategoryID} handleupdate={handleUpdate} />
 
                     </Grid>
                     <Grid item xs={6}>
@@ -136,7 +132,6 @@ const View = (props) => {
                             name="myImage"
                             imageid={values.ID}
                             imagename={props.Name}
-                            handleupdate={handleUpdate}
                             height='200px'
                         />
                     </Grid>

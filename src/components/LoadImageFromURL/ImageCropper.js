@@ -180,7 +180,7 @@ function ImageCropper({ setFinalImage, setIsPreviewOpen, closeImageLoader, aspec
               rotation={rotationValue}
               zoom={zoomValue}
               maxZoom={7}
-              aspect={aspectRatio}
+              aspect={1}
               onCropChange={setCrop}
               onRotationChange={setRotationValue}
               onCropComplete={onCropComplete}

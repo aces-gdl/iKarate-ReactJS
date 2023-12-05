@@ -26,7 +26,7 @@ const SelectCategories = (props) => {
       }, [])
 
     return (
-        <FormControl fullWidth sx={{ marginRight: 2 }}>
+        <FormControl size='small' fullWidth sx={{ marginRight: 2 }}>
                 <InputLabel id="CategoryL">Cinturon</InputLabel>
                 <Select
                  labelId="CategoryL"
@@ -36,7 +36,7 @@ const SelectCategories = (props) => {
                  label="Category"
                  onChange={props.handleupdate}>
 
-                <MenuItem value='todos' key='AllCategories'>Todos</MenuItem>
+                <MenuItem value='' key='AllCategories'>Todos</MenuItem>
                 {categories.map((row) => {
                     return <MenuItem value={row.ID} key={row.ID}>
                         <Grid container  key={`gc-${row.id}`}>

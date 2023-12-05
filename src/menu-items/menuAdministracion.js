@@ -14,7 +14,7 @@ const menuAdministracion = {
             id: 'Dojos',
             title: 'Dojos',
             type: 'item',
-            url: '/views/dojos/Browse',
+            url: '/views/dojos',
             icon: icons.IconBeach,
             breadcrums: true
         },
